@@ -1,3 +1,4 @@
+import matter from 'gray-matter'
 import { marked } from 'marked'
 import Image from 'next/image'
 import { readFile } from 'node:fs/promises'
@@ -9,7 +10,11 @@ export default async function PostPage() {
         'src/content/blog/learn-nextjs.md'
     )
     const text = await readFile(filePath, 'utf-8')
-    const html = marked(text)
+    const {
+        content,
+        data: { title, image, date, author },
+    } = matter(text)
+    const html = marked(content)
 
     return (
         <div className='p-8 font-[family-name:var(--font-geist-sans)]'>
@@ -23,6 +28,11 @@ export default async function PostPage() {
                     priority
                 />
 
+                <h1>{title}</h1>
+                <p>
+                    {date} - {author}
+                </p>
+                <img src={image} />
                 <div
                     dangerouslySetInnerHTML={{ __html: html }}
                     className='prose'
