@@ -1,20 +1,8 @@
-import matter from 'gray-matter'
-import { marked } from 'marked'
 import Image from 'next/image'
-import { readFile } from 'node:fs/promises'
-import path from 'path'
+import { getPost } from '@/lib/post'
 
 export default async function PostPage() {
-    const filePath = path.join(
-        process.cwd(),
-        'src/content/blog/learn-nextjs.md'
-    )
-    const text = await readFile(filePath, 'utf-8')
-    const {
-        content,
-        data: { title, image, date, author },
-    } = matter(text)
-    const html = marked(content)
+    const post = await getPost('learn-nextjs')
 
     return (
         <div className='p-8 font-[family-name:var(--font-geist-sans)]'>
@@ -28,13 +16,13 @@ export default async function PostPage() {
                     priority
                 />
 
-                <h1>{title}</h1>
+                <h1>{post.title}</h1>
                 <p>
-                    {date} - {author}
+                    {post.date} - {post.author}
                 </p>
-                <img src={image} />
+                <img src={post.image} />
                 <div
-                    dangerouslySetInnerHTML={{ __html: html }}
+                    dangerouslySetInnerHTML={{ __html: post.body }}
                     className='prose'
                 />
 
