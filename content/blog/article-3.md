@@ -1,11 +1,11 @@
 ---
-title: 'Learn Next.js'
+title: 'Article 3'
 image: '/images/head-hat-square.png'
 date: '12/25/2024'
 author: 'admin'
 ---
 
-# Heading
+# Article 3
 
 ## sub-heading
 

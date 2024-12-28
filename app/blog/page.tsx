@@ -1,17 +1,21 @@
 import Image from 'next/image'
-import Link from 'next/link'
+import PostCard from '../../components/PostCard'
+import { getAllPost } from '../../lib/post'
 
-export default function BlogPage() {
+export default async function BlogPage() {
+    const posts = await getAllPost()
+
     return (
         <div className='p-8 font-[family-name:var(--font-geist-sans)]'>
             <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
                 <ul>
-                    <li>
-                        <Link href='/blog/articles-title-1'>article 1</Link>
-                    </li>
-                    <li>
-                        <Link href='/blog/articles-title-2'>article 2</Link>
-                    </li>
+                    {posts.map((post) => (
+                        <PostCard
+                            key={`/blog/${post.slug}`}
+                            href={`/blog/${post.slug}`}
+                            title={post.title}
+                        />
+                    ))}
                 </ul>
                 <div className='flex gap-4 items-center flex-col sm:flex-row'>
                     <a
