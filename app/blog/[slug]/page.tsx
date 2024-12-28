@@ -1,18 +1,32 @@
 import Image from 'next/image'
+import { getPost } from '../../../lib/post'
 
-export default function PostPage() {
+interface Params {
+    params: {
+        slug: string
+    }
+}
+
+export default async function PostPage({ params: { slug } }: Readonly<Params>) {
+    const post = await getPost(slug)
+
     return (
         <div className='p-8 font-[family-name:var(--font-geist-sans)]'>
             <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start'>
+                <p>
+                    {post.date} - {post.title} - {post.author}
+                </p>
                 <Image
-                    className='dark:invert'
-                    src='https://nextjs.org/icons/next.svg'
-                    alt='Next.js logo'
-                    width={180}
-                    height={38}
-                    priority
+                    src={post.image}
+                    alt='content'
+                    height={400}
+                    width={400}
                 />
-                <p>test article 1</p>
+                <div
+                    dangerouslySetInnerHTML={{ __html: post.body }}
+                    className='prose'
+                />
+
                 <div className='flex gap-4 items-center flex-col sm:flex-row'>
                     <a
                         className='rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5'
